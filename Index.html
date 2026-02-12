@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PRIONTABHA 💖</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-top: 100px;
+            font-size: 40px;
+        }
+
+        #buttons {
+            margin-top: 40px;
+            position: relative;
+            height: 200px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background: white;
+            color: #ff4b6e;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+        }
+
+        #noBtn {
+            background: #ff4b6e;
+            color: white;
+            position: absolute;
+        }
+
+        #message {
+            margin-top: 30px;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        #official {
+            font-size: 65px;
+            margin-top: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: 1s;
+            text-shadow: 0 0 25px white;
+        }
+
+        .showOfficial {
+            opacity: 1 !important;
+            transform: scale(1.2) !important;
+        }
+
+        .heartRain {
+            position: fixed;
+            top: -10px;
+            font-size: 22px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Will You Be Mine Forever? 💖</h1>
+
+    <div id="buttons">
+        <button id="yesBtn" onclick="yesClicked()">Yes 💕</button>
+        <button id="noBtn">No 😜</button>
+    </div>
+
+    <div id="message"></div>
+    <div id="official">💍 PRIONTABHA 💖<br>Officially Forever</div>
+
+    <audio id="romanticMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="fireworks"></canvas>
+
+<script>
+    const noBtn = document.getElementById("noBtn");
+    const music = document.getElementById("romanticMusic");
+    const officialText = document.getElementById("official");
+
+    noBtn.addEventListener("mouseover", function() {
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 100);
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    });
+
+    function yesClicked() {
+        document.getElementById("message").innerHTML =
+            "From no one... to your forever 💕<br><br>" +
+            "Now it's official ❤️";
+
+        music.play();
+        startFireworks();
+        officialText.classList.add("showOfficial");
+        startHeartRain();
+    }
+
+    function startHeartRain() {
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("heartRain");
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }, 200);
+    }
+
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    function createFirework(x, y) {
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: x,
+                y: y,
+                radius: 2,
+                color: "hsl(" + Math.random() * 360 + ",100%,50%)",
+                speed: Math.random() * 5 + 2,
+                angle: Math.random() * 2 * Math.PI,
+                alpha: 1
+            });
+        }
+    }
+
+    function startFireworks() {
+        setInterval(() => {
+            createFirework(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height / 2
+            );
+        }, 800);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.fillStyle = "rgba(0,0,0,0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, index) => {
+            p.x += Math.cos(p.angle) * p.speed;
+            p.y += Math.sin(p.angle) * p.speed;
+            p.alpha -= 0.02;
+
+            ctx.globalAlpha = p.alpha;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+
+            if (p.alpha <= 0) {
+                particles.splice(index, 1);
+            }
+        });
+    }
+
+    animate();
+</script>
+
+</body>
+  </html>
